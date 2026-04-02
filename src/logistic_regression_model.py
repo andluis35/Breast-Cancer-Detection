@@ -1,7 +1,7 @@
 import pandas as pd
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import confusion_matrix
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import cross_val_score, train_test_split
 
 # Carregando o dataset
 dataset = pd.read_csv('./breast_cancer.csv')
@@ -20,3 +20,8 @@ y_pred = classifier.predict(X_test)
 
 # Construindo a 'Confusion Matrix'
 cm = confusion_matrix(y_test, y_pred)
+
+# Computando a precisão com 'K-Fold Cross Validation'
+accuracies = cross_val_score(estimator=classifier, X=X_train, y=y_train, cv=10)
+print(f"Precisão: {accuracies.mean() * 100 :.2f}%")
+print(f"Desvio padrão: {accuracies.std() * 100 :.2f}%")
