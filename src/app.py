@@ -1,36 +1,39 @@
+import components
+import detection_model
 import numpy as np
 import pandas as pd
 import plotly.express as px
 from sklearn.linear_model import LogisticRegression
 import streamlit as st
+import styles
+from time import sleep
+
 
 # Configurações iniciais da página
-st.set_page_config(
-    page_title="Preditor - Câncer de Mama",
-    layout="wide"
-)
+st.set_page_config(page_title="Preditor - Câncer de Mama", layout="wide")
+styles.load_styles()
+
 
 # Carregamento do dataset
 @st.cache_data
-def load_data():
-    return pd.read_csv("breast_cancer.csv")
+def get_data():
+    return detection_model.load_data()
 
-dataset = load_data()
-X = dataset.iloc[:, 1:-1].values
-y = dataset.iloc[:, -1].values
+dataset = get_data()
+X, y = detection_model.prepare_data(dataset)
+
 
 # Treinamento do modelo (já validado anteriormente)
 @st.cache_resource
-def train_model():
-    model = LogisticRegression(max_iter=1000)
-    model.fit(X, y)
-    return model
+def get_model():
+    return detection_model.train_model(X, y)
 
-model = train_model()
+model = get_model()
+
 
 # Cabeçalho da página
-st.title("🔬 Preditor de Câncer de Mama 🔬")
-st.markdown("Modelo de Machine Learning utilizando Regressão Logística para classificação de tumores.")
+components.show_centered_title("🔬 Preditor de Câncer de Mama 🔬")
+
 
 # Tradução das features
 feature_labels = {
@@ -46,8 +49,11 @@ feature_labels = {
 }
 feature_names = dataset.columns[1:-1]
 
+
 # Menu lateral com as entradas do usuário
 st.sidebar.header("🧪 Parâmetros do Exame 🧪")
+st.sidebar.markdown("Ajuste os parâmetros abaixo para simular um exame clínico.")
+
 user_input = []
 
 for feature in feature_names:
@@ -62,12 +68,23 @@ for feature in feature_names:
 
 input_array = np.array(user_input).reshape(1, -1)
 
-# Botão de predição
-if st.sidebar.button("🔍 Prever"):
-    prediction = model.predict(input_array)[0]
-    prob = model.predict_proba(input_array)[0][1]
 
-    # Resultado
+# Efetuando previsão
+prediction, prob = detection_model.predict(model, input_array)
+
+
+# Carregamento
+col1, col2, col3 = st.columns([1,2,1])
+
+with col2:
+    with st.spinner("Analisando dados..."):
+        sleep(2)
+
+
+# Exibição dos resultados
+with st.container():
+    components.show_section_title("📊 Resultado 📊")
+    
     col1, col2 = st.columns(2)
 
     with col1:
@@ -75,38 +92,32 @@ if st.sidebar.button("🔍 Prever"):
             st.success("🟢 Tumor Benigno")
         if prediction == 4:
             st.error("🔴 Tumor Maligno")
-    
+        
     with col2:
-        st.metric("Probabilidade de malignidade", f"{prob:.2f}")
+        components.show_result_card(title="Probabilidade de Malignidade", value=prob, color="blue")
 
-    # Gráfico de probabilidade
-    figure = px.bar(
-        x=["Benigno", "Maligno"],
-        y=[1 - prob, prob],
-        labels={"x": "Classe", "y": "Probabilidade"},
-    )
-    st.plotly_chart(figure, use_container_width=True)
 
-    # Visualização da importância das variáveis
-    st.subheader("📊 Influência das Variáveis 📊")
-    coefficients = model.coef_[0]
+# Gráfico de probabilidade
+figure = px.bar(
+    x=["Benigno", "Maligno"],
+    y=[1 - prob, prob],
+    labels={"x": "Classe", "y": "Probabilidade"},
+)
+st.plotly_chart(figure, use_container_width=True)
 
-    figure2 = px.bar(
-        x=coefficients,
-        y=[feature_labels[f] for f in feature_names],
-        orientation="h",
-        labels={"x": "Impacto no modelo", "y": "Variável"},
-    )
-    st.plotly_chart(figure2, use_container_width=True)
+
+# Gráfico de importância das variáveis
+st.subheader("📊 Influência das Variáveis 📊")
+coefficients = model.coef_[0]
+
+figure2 = px.bar(
+    x=coefficients,
+    y=[feature_labels[f] for f in feature_names],
+    orientation="h",
+    labels={"x": "Impacto no modelo", "y": "Variável"},
+)
+st.plotly_chart(figure2, use_container_width=True)
 
 
 # Sobre o projeto
-st.markdown("""
----
-### 🧠 Sobre o projeto 🧠
-    - Dataset: Wisconsin Breast Cancer (UCI)
-    - Modelo: Regressão Logística
-    - Objetivo: Classificação binária (Benigno vs Maligno)
-            
-    Este projeto busca demonstrar como modelos de Machine Learning podem auxiliar na análise de dados médicos.
-""")
+components.show_about_project()

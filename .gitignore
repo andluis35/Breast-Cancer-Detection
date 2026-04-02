@@ -1,0 +1,57 @@
+# ----------------------
+# PYTHON
+# ----------------------
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# ----------------------
+# AMBIENTE VIRTUAL
+# ----------------------
+venv/
+.env/
+.venv/
+
+# ----------------------
+# STREAMLIT
+# ----------------------
+.streamlit/secrets.toml
+
+# ----------------------
+# DADOS
+# ----------------------
+*.csv
+*.xlsx
+
+# 👉 EXCEÇÃO (se quiser versionar o dataset principal)
+!breast_cancer.csv
+
+# ----------------------
+# MODELOS TREINADOS
+# ----------------------
+*.pkl
+*.joblib
+
+# ----------------------
+# LOGS
+# ----------------------
+*.log
+
+# ----------------------
+# IDEs / EDITORES
+# ----------------------
+.vscode/
+.idea/
+
+# ----------------------
+# SISTEMA OPERACIONAL
+# ----------------------
+.DS_Store
+Thumbs.db
+
+# ----------------------
+# CACHE / TESTES
+# ----------------------
+.pytest_cache/
+.cache/
