@@ -1,30 +1,36 @@
 import streamlit as st
 
 
-def show_result_card(title, value, color):
-    st.markdown(f"""
-        <div style="
-            background-color: #f0f2f6;
-            color: #000000;
-            height: 56px;
-            border-radius: 8px;
-            text-align: center;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-        ">
-            <h5>{title}
-                <div style="color:{color};">{value*100:.2f}%</div>
-                </div>
-            </h5>
+def show_result_card(title, value):
+    percentage = value * 100
+
+    #Definição de cor baseada no risco
+    if percentage < 40:
+        color = "#2ecc71"
+    elif percentage < 50:
+        color = "#f1c40f"
+    else:
+        color = "#e74c3c"
+
+    st.markdown(
+        f"""
+        <div class="result-card">
+            <div class="result-title">{title}</div>
+            <div class="result-value" style="color:{color};">{percentage:.2f}%</div>
         </div>
         """, unsafe_allow_html=True)
     
 
-def show_centered_title(text):
+def show_title_card(title, subtitle=None):
     st.markdown(
-        f"<h1 style='text-align:center;'>{text}</h1>",
+        f"""
+        <div class="title-card">
+            <h1>{title}</h1>
+            {f"<p>{subtitle}</p>" if subtitle else ""}
+        </div>
+        """, 
         unsafe_allow_html=True
     )
-    st.markdown("***")
 
 
 def show_section_title(text):

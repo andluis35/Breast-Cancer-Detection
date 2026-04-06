@@ -2,7 +2,8 @@ import streamlit as st
 
 
 def load_styles():
-    st.markdown("""
+    st.markdown(
+        """
         <style>
             .main {
                 background-color: #FAEED1;
@@ -56,6 +57,58 @@ def load_styles():
                 font-size: 24px;
                 font-weight: 800;    
             }
+                
+            .title-card {
+                background: linear-gradient(135deg, #141e30, #243b55);
+                padding: 30px 20px;
+                border-radius: 16px;
+                text-align: center;
+                color: white;
+                box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+                margin-bottom: 25px;
+            }
+                
+            .title-card h1 {
+                margin: 0;
+                font-size: 32px;
+                font-weight: 700;
+            }
+                
+            .title-card p {
+                margin-top: 8px;
+                font-size: 14px;
+                opacity: 0.9;
+            }
+
+            .result-card {
+                background: white;
+                padding: 18px;
+                border-radius: 14px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+                transition: 0.2s ease;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                text-align: center;
+            }
+
+            .result-card:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+            }
+
+            .result-title {
+                font-size: 14px;
+                color: #666;
+                margin-bottom: 8px;
+            }
+
+            .result-value {
+                font-size: 28px;
+                font-weight: 700;
+            }
         </style>
-        """, unsafe_allow_html=True
+        """, 
+        unsafe_allow_html=True
     )

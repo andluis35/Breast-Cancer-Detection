@@ -32,7 +32,7 @@ model = get_model()
 
 
 # Cabeçalho da página
-components.show_centered_title("🔬 Preditor de Câncer de Mama 🔬")
+components.show_title_card("🔬 Preditor de Câncer de Mama 🔬", "Modelo de Machine Learning para apoio à análise clínica")
 
 
 # Tradução das features
@@ -95,7 +95,7 @@ with st.container():
             st.error("🔴 Tumor Maligno")
         
     with col2:
-        components.show_result_card(title="Probabilidade de Malignidade", value=prob, color="blue")
+        components.show_result_card("Probabilidade de Malignidade", prob)
 
 
 # Gráfico de probabilidade
