@@ -51,12 +51,13 @@ feature_names = dataset.columns[1:-1]
 
 
 # Menu lateral com as entradas do usuário
-st.sidebar.header("🧪 Parâmetros do Exame 🧪")
-st.sidebar.markdown("Ajuste os parâmetros abaixo para simular um exame clínico.")
+st.sidebar.markdown('<div class="sidebar-header"> <span class="sidebar-title">Simulação Clínica</span> <span> Ajuste os parâmetros do exame citológico. </span> </div>', unsafe_allow_html=True)
 
 user_input = []
 
 for feature in feature_names:
+    st.sidebar.markdown('<div class="sidebar-card">', unsafe_allow_html=True)
+    
     value = st.sidebar.slider(
         feature_labels[feature],
         float(dataset[feature].min()),
@@ -107,7 +108,7 @@ st.plotly_chart(figure, use_container_width=True)
 
 
 # Gráfico de importância das variáveis
-st.subheader("📊 Influência das Variáveis 📊")
+components.show_section_title("📊 Influência das Variáveis 📊")
 coefficients = model.coef_[0]
 
 figure2 = px.bar(
@@ -120,4 +121,5 @@ st.plotly_chart(figure2, use_container_width=True)
 
 
 # Sobre o projeto
+components.show_section_title("🧠 Sobre o projeto 🧠")
 components.show_about_project()

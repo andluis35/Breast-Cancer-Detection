@@ -24,6 +24,7 @@ def show_centered_title(text):
         f"<h1 style='text-align:center;'>{text}</h1>",
         unsafe_allow_html=True
     )
+    st.markdown("***")
 
 
 def show_section_title(text):
@@ -35,8 +36,7 @@ def show_section_title(text):
 
 def show_about_project():
     st.markdown("""
-        ---
-        ### 🧠 Sobre o projeto 🧠
+        ###
             - Dataset: Wisconsin Breast Cancer (UCI)
             - Modelo: Regressão Logística
             - Objetivo: Classificação binária (Benigno vs Maligno)
