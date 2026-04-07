@@ -7,7 +7,7 @@ def load_data():
         Carrega o dataset de câncer de mama a partir de um arquivo CSV.
     '''
 
-    return pd.read_csv("data/breast_cancer.csv")
+    return pd.read_csv("../data/breast_cancer.csv")
 
 
 def prepare_data(dataset):
