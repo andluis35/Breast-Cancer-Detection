@@ -90,7 +90,6 @@ with st.container():
 
     with col1:
         components.show_status_card(prediction)
-        
     with col2:
         components.show_result_card("Probabilidade de Malignidade", prob)
 
@@ -114,8 +113,6 @@ figure.update_layout(
 )
 
 st.plotly_chart(figure, use_container_width=True)
-
-
 
 # Gráfico de importância das variáveis
 components.show_section_title("📊 Influência das Variáveis 📊")

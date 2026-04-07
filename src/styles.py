@@ -30,11 +30,12 @@ def load_styles():
             }
 
             div[data-testid="stPlotlyChart"] {
-                background: white;
-                padding: 18px;
-                border-radius: 14px;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-                margin: 24px;
+                background: transparent;
+                padding: 0;
+                margin: 0;
+                box-shadow: none;
+                border-radius: 16px;
+                overflow: hidden;
             }
 
             h3 {
@@ -44,7 +45,7 @@ def load_styles():
             .sidebar-card {
                 background: rgba(255, 255, 255, 0.05);
                 padding: 10px 12px;
-                border-radius: 10px;
+                border-radius: 16px;
                 margin-bottom: 12px;
                 transition: 0.2s;
             }
@@ -56,7 +57,7 @@ def load_styles():
             .sidebar-header {
                 background: rgba(255,255,255,0.08);
                 padding: 12px;
-                border-radius: 10px;
+                border-radius: 16px;
                 margin-bottom: 60px;
                 display: flex;
                 flex-direction: column;
@@ -95,7 +96,7 @@ def load_styles():
             .result-card {
                 background: white;
                 padding: 18px;
-                border-radius: 14px;
+                border-radius: 16px;
                 box-shadow: 0 4px 12px rgba(0,0,0,0.08);
                 transition: 0.2s ease;
                 height: 128px;
@@ -125,7 +126,7 @@ def load_styles():
             .status-card {
                 background: white;
                 padding: 18px;
-                border-radius: 14px;
+                border-radius: 16px;
                 box-shadow: 0 4px 12px rgba(0,0,0,0.08);
                 height: 128px;
                 display: flex;
@@ -205,6 +206,18 @@ def load_styles():
 
             .credits-images img {
                 margin: 12px;
+            }
+
+            .section-card {
+                background: linear-gradient(135deg, #141e30, #243b55);
+                color: white;
+                padding: 14px 20px;
+                border-radius: 16px;
+                font-size: 18px;
+                font-weight: 600;
+                text-align: center;
+                margin: 24px 0 16px 0;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.12);
             }
         </style>
         """, 

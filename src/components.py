@@ -35,7 +35,11 @@ def show_title_card(title, subtitle=None):
 
 def show_section_title(text):
     st.markdown(
-        f"<h3 style='text-align: center;'>{text}</h3>",
+        f"""
+        <div class="section-card">
+            {text}
+        </div>
+        """,
         unsafe_allow_html=True
     )
 
