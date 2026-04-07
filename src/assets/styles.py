@@ -17,6 +17,7 @@ def load_styles():
 
             [data-testid="stSidebar"] {
                 background: linear-gradient(180deg, #2C687B, #2C687B);
+                border-right: 12px solid #8CC7C4;
             }
 
             [data-testid="stSidebar"] * {
