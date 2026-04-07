@@ -1,163 +1,194 @@
 import components
 import detection_model
 import numpy as np
-import pandas as pd
 import plotly.express as px
-import plotly.io as pio
-from sklearn.linear_model import LogisticRegression
 import streamlit as st
 import styles
 from time import sleep
 
 
-# Configurações iniciais da página
-st.set_page_config(page_title="Preditor - Câncer de Mama", layout="wide")
-styles.load_styles()
+# --------------------------
+# Paleta de cores utilizadas
+# --------------------------
+PRIMARY_RED = "#DB1A1A"
+LIGHT_BG = "#FFF6F6"
+ACCENT_GREEN = "#8CC7C4"
+ACCENT_BLUE = "#2C687B"
+DARK_GRAY = "#2C2D2E"
 
 
-# Carregamento do dataset
+# --------------------------
+# Setup inicial
+# --------------------------
+def setup_app():
+    st.set_page_config(page_title="Preditor - Câncer de Mama", layout="wide")
+    styles.load_styles()
+
+
+# --------------------------
+# Dados e Modelo
+# --------------------------
 @st.cache_data
-def get_data():
+def load_data():
     return detection_model.load_data()
 
-dataset = get_data()
-X, y = detection_model.prepare_data(dataset)
 
-
-# Treinamento do modelo (já validado anteriormente)
 @st.cache_resource
-def get_model():
+def load_model(X, y):
     return detection_model.train_model(X, y)
 
-model = get_model()
+
+# --------------------------
+# Sidebar
+# --------------------------
+def build_sidebar(dataset, feature_names, feature_labels):
+    components.show_sidebar()
+
+    user_input = []
+
+    for feature in feature_names:
+        st.sidebar.markdown('<div class="sidebar-card">', unsafe_allow_html=True)
+        
+        value = st.sidebar.slider(
+            feature_labels[feature],
+            float(dataset[feature].min()),
+            float(dataset[feature].max()),
+            float(dataset[feature].mean()),
+            help=f"Nome original: {feature}"
+        )
+        user_input.append(value)
+
+    return np.array(user_input).reshape(1, -1)
 
 
-# Cabeçalho da página
-components.show_title_card("Sistema de Predição de Câncer de Mama", "Modelo de Machine Learning para apoio à análise clínica")
+# --------------------------
+# Predição
+# --------------------------
+def make_prediction(model, input_array):
+    return detection_model.predict(model, input_array)
 
 
-# Tradução das features
-feature_labels = {
-    "Clump Thickness": "Espessura do aglomerado celular",
-    "Uniformity of Cell Size": "Uniformidade do tamanho das células",
-    "Uniformity of Cell Shape": "Uniformidade do formato das células",
-    "Marginal Adhesion": "Aderência marginal",
-    "Single Epithelial Cell Size": "Tamanho das células epiteliais isoladas",
-    "Bare Nuclei": "Núcleos desnudos",
-    "Bland Chromatin": "Cromatina homogênea",
-    "Normal Nucleoli": "Nucléolos normais",
-    "Mitoses": "Taxa de mitoses"
-}
-feature_names = dataset.columns[1:-1]
+# --------------------------
+# Resultados
+# --------------------------
+def show_results(prediction, prob):
+    with st.container():
+        components.show_section_title("📊 Resultado")
+        
+        col1, col2 = st.columns(2)
+
+        with col1:
+            components.show_status_card(prediction)
+        with col2:
+            components.show_result_card("Probabilidade de Malignidade", prob)
 
 
-# Menu lateral com as entradas do usuário
-components.show_sidebar()
+# --------------------------
+# Gráfico de Probabilidade
+# --------------------------
+def plot_probability_chart(prob):
+    figure = px.bar(
+        x=["Benigno", "Maligno"],
+        y=[1 - prob, prob],
+        labels={"x": "", "y": "Probabilidade"},
+    )
 
-user_input = []
+    figure.update_traces(
+        marker_color=[ACCENT_GREEN, PRIMARY_RED],
+        text=[f"{(1-prob)*100:.1f}%", f"{prob*100:.1f}%"],
+        textposition="outside"
+    )
 
-for feature in feature_names:
-    st.sidebar.markdown('<div class="sidebar-card">', unsafe_allow_html=True)
+    figure.update_layout(
+        plot_bgcolor=LIGHT_BG,
+        paper_bgcolor=LIGHT_BG,
+        font=dict(color=ACCENT_BLUE),
+        margin=dict(l=20, r=20, t=40, b=20),
+        
+        xaxis=dict(tickfont=dict(color=ACCENT_BLUE)),
+        yaxis=dict(tickfont=dict(color=ACCENT_BLUE)),
+        yaxis_title_font=dict(color=ACCENT_BLUE),
+    )
+    st.plotly_chart(figure, use_container_width=True)
+
+
+# --------------------------
+# Gráfico de Importância
+# --------------------------
+def plot_relevance_chart(model, feature_names, feature_labels):
+    components.show_section_title("📊 Influência das Variáveis")
+
+    coefficients = model.coef_[0]
+    abs_coeff = np.abs(coefficients)
+
+    figure2 = px.bar(
+        x=coefficients,
+        y=[feature_labels[f] for f in feature_names],
+        orientation="h",
+        color=abs_coeff,
+        color_continuous_scale=[
+            (0.0, ACCENT_GREEN),
+            (0.5, ACCENT_BLUE),
+            (1.0, PRIMARY_RED),
+        ]
+    )
+
+    figure2.update_layout(
+        coloraxis_showscale=False,
+        xaxis_title="Impacto no modelo",
+        yaxis_title="",
+        plot_bgcolor=LIGHT_BG,
+        paper_bgcolor=LIGHT_BG,
+        font=dict(color=DARK_GRAY),
+        
+        xaxis=dict(tickfont=dict(color=ACCENT_BLUE)),
+        yaxis=dict(tickfont=dict(color=ACCENT_BLUE)),
+        xaxis_title_font=dict(color=ACCENT_BLUE),
+    )
+    st.plotly_chart(figure2, use_container_width=True)
+
+
+# --------------------------
+# MAIN
+# --------------------------
+def main():
+    setup_app()
+
+    dataset = load_data()
+    X, y = detection_model.prepare_data(dataset)
+    model = load_model(X, y)
+
+    components.show_title_card(
+        "Sistema de Predição de Câncer de Mama",
+        "Modelo de Machine Learning para apoio à análise clínica"
+    )
+
+    feature_labels = {
+        "Clump Thickness": "Espessura do aglomerado celular",
+        "Uniformity of Cell Size": "Uniformidade do tamanho das células",
+        "Uniformity of Cell Shape": "Uniformidade do formato das células",
+        "Marginal Adhesion": "Aderência marginal",
+        "Single Epithelial Cell Size": "Tamanho das células epiteliais isoladas",
+        "Bare Nuclei": "Núcleos desnudos",
+        "Bland Chromatin": "Cromatina homogênea",
+        "Normal Nucleoli": "Nucléolos normais",
+        "Mitoses": "Taxa de mitoses"
+    }
+    feature_names = dataset.columns[1:-1]
+
+    input_array = build_sidebar(dataset, feature_names, feature_labels)
     
-    value = st.sidebar.slider(
-        feature_labels[feature],
-        float(dataset[feature].min()),
-        float(dataset[feature].max()),
-        float(dataset[feature].mean()),
-        help=f"Nome original: {feature}"
-    )
-    user_input.append(value)
+    prediction, prob = make_prediction(model, input_array)
 
-input_array = np.array(user_input).reshape(1, -1)
+    show_results(prediction, prob)
+    plot_probability_chart(prob)
+    plot_relevance_chart(model, feature_names, feature_labels)
+
+    components.show_about_project()
 
 
-# Efetuando previsão
-prediction, prob = detection_model.predict(model, input_array)
-
-
-# Carregamento
-col1, col2, col3 = st.columns([1,2,1])
-
-with col2:
-    with st.spinner("Analisando dados..."):
-        sleep(2)
-
-# Exibição dos resultados
-with st.container():
-    components.show_section_title("📊 Resultado")
-    
-    col1, col2 = st.columns(2)
-
-    with col1:
-        components.show_status_card(prediction)
-    with col2:
-        components.show_result_card("Probabilidade de Malignidade", prob)
-
-
-# Gráfico de probabilidade
-figure = px.bar(
-    x=["Benigno", "Maligno"],
-    y=[1 - prob, prob],
-    labels={"x": "", "y": "Probabilidade"},
-)
-
-figure.update_traces(
-    marker_color=["#8CC7C4", "#DB1A1A"],
-    text=[f"{(1-prob)*100:.1f}%", f"{prob*100:.1f}%"],
-    textposition="outside"
-)
-
-figure.update_layout(
-    plot_bgcolor="#FFF6F6",
-    paper_bgcolor="#FFF6F6",
-    font=dict(color="#2C687B"),
-    margin=dict(l=20, r=20, t=40, b=20),
-    yaxis_title_font=dict(color="#2C687B"),
-
-    xaxis=dict(
-        tickfont=dict(color="#2C687B"),
-    ),
-    yaxis=dict(
-        tickfont=dict(color="#2C687B"),
-    )
-)
-st.plotly_chart(figure, use_container_width=True)
-
-# Gráfico de importância das variáveis
-components.show_section_title("📊 Influência das Variáveis")
-coefficients = model.coef_[0]
-abs_coeff = np.abs(coefficients)
-
-figure2 = px.bar(
-    x=coefficients,
-    y=[feature_labels[f] for f in feature_names],
-    orientation="h",
-    color=abs_coeff,
-    color_continuous_scale=[
-        (0.0, "#8CC7C4"),
-        (0.5, "#2C687B"),
-        (1.0, "#DB1A1A"),
-    ]
-)
-
-figure2.update_layout(
-    coloraxis_showscale=False,
-    xaxis_title="Impacto no modelo",
-    yaxis_title="",
-    plot_bgcolor="#FFF6F6",
-    paper_bgcolor="#FFF6F6",
-    font=dict(color="#2C2D2E"),
-    xaxis_title_font=dict(color="#2C687B"),
-
-    xaxis=dict(
-        tickfont=dict(color="#2C687B"),
-    ),
-    yaxis=dict(
-        tickfont=dict(color="#2C687B"),
-    )
-)
-st.plotly_chart(figure2, use_container_width=True)
-
-
-# Sobre o projeto
-components.show_about_project()
+# --------------------------
+# ENTRYPOINT
+# --------------------------
+if __name__ == "__main__":
+    main()
