@@ -6,11 +6,11 @@ def load_styles():
         """
         <style>
             [data-testid="stAppViewContainer"] {
-                background-color: #FAEED1;
+                background-color: #FFF6F6;
             }
 
             [data-testid="stSidebar"] {
-                background: linear-gradient(180deg, #1e1e2f, #2c2c54);
+                background: linear-gradient(180deg, #2C687B, #2C687B);
             }
 
             [data-testid="stSidebar"] * {
@@ -18,7 +18,7 @@ def load_styles():
             }
                 
             [data-testid="stSidebarHeader"] {
-                margin: 0;    
+                margin: 0;
             }
                     
             [data-testid="stSidebar"] h1,
@@ -70,9 +70,22 @@ def load_styles():
                 font-size: 24px;
                 font-weight: 800;    
             }
-                
+
+            .sidebar {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+            }
+
+            .medical-cross {
+                width: 100px;
+                margin-bottom: 60px;
+            }
+
             .title-card {
-                background: linear-gradient(135deg, #141e30, #243b55);
+                background: linear-gradient(135deg, #2C687B, #2C687B);
                 padding: 30px 20px;
                 border-radius: 16px;
                 text-align: center;
@@ -162,7 +175,7 @@ def load_styles():
                 padding: 20px;
                 border-radius: 16px;
                 box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-                margin-top: 10px;
+                margin-top: 64px;
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
@@ -206,17 +219,22 @@ def load_styles():
 
             .credits-images img {
                 margin: 12px;
+                transition: 0.2s ease;
+            }
+
+            .credits-images img:hover {
+                transform: translateY(-2px);
             }
 
             .section-card {
-                background: linear-gradient(135deg, #141e30, #243b55);
+                background: linear-gradient(135deg, #2C687B, #2C687B);
                 color: white;
                 padding: 14px 20px;
                 border-radius: 16px;
-                font-size: 18px;
+                font-size: 20px;
                 font-weight: 600;
+                margin-top: 32px;
                 text-align: center;
-                margin: 24px 0 16px 0;
                 box-shadow: 0 4px 12px rgba(0,0,0,0.12);
             }
         </style>

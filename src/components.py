@@ -1,6 +1,19 @@
 import streamlit as st
 
 
+def show_sidebar():
+    st.sidebar.markdown(
+        """
+        <div class="sidebar">
+            <img class="medical-cross" src="https://cdn-icons-png.flaticon.com/512/185/185941.png" />
+            <div class="sidebar-header">
+                <span class="sidebar-title">Simulação Clínica</span>
+                <span> Ajuste os parâmetros do exame citológico.</span> 
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+
 def show_result_card(title, value):
     percentage = value * 100
 

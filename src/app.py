@@ -52,7 +52,7 @@ feature_names = dataset.columns[1:-1]
 
 
 # Menu lateral com as entradas do usuário
-st.sidebar.markdown('<div class="sidebar-header"> <span class="sidebar-title">Simulação Clínica</span> <span> Ajuste os parâmetros do exame citológico. </span> </div>', unsafe_allow_html=True)
+components.show_sidebar()
 
 user_input = []
 
@@ -102,16 +102,25 @@ figure = px.bar(
 )
 
 figure.update_traces(
-    marker_color=["#2ecc71", "#e74c3c"],
+    marker_color=["#8CC7C4", "#DB1A1A"],
     text=[f"{(1-prob)*100:.1f}%", f"{prob*100:.1f}%"],
     textposition="outside"
 )
 
 figure.update_layout(
-    showlegend=False,
-    yaxis=dict(range=[0,1]),
-)
+    plot_bgcolor="#FFF6F6",
+    paper_bgcolor="#FFF6F6",
+    font=dict(color="#2C687B"),
+    margin=dict(l=20, r=20, t=40, b=20),
+    yaxis_title_font=dict(color="#2C687B"),
 
+    xaxis=dict(
+        tickfont=dict(color="#2C687B"),
+    ),
+    yaxis=dict(
+        tickfont=dict(color="#2C687B"),
+    )
+)
 st.plotly_chart(figure, use_container_width=True)
 
 # Gráfico de importância das variáveis
@@ -124,13 +133,26 @@ figure2 = px.bar(
     y=[feature_labels[f] for f in feature_names],
     orientation="h",
     color=abs_coeff,
-    color_continuous_scale="Reds"
+    color_continuous_scale=[
+        (0.0, "#8CC7C4"),
+        (0.5, "#2C687B"),
+        (1.0, "#DB1A1A"),
+    ]
 )
 
 figure2.update_layout(
     coloraxis_showscale=False,
     xaxis_title="Impacto no modelo",
-    yaxis_title=""
+    yaxis_title="",
+    plot_bgcolor="#FFF6F6",
+    paper_bgcolor="#FFF6F6",
+    font=dict(color="#2C2D2E"),
+    xaxis=dict(
+        tickfont=dict(color="#2C687B"),
+    ),
+    yaxis=dict(
+        tickfont=dict(color="#2C687B"),
+    )
 )
 st.plotly_chart(figure2, use_container_width=True)
 
