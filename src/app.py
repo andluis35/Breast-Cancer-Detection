@@ -46,7 +46,7 @@ def build_sidebar(dataset, feature_names, feature_labels):
     user_input = []
 
     for feature in feature_names:
-        st.sidebar.markdown('<div class="sidebar-card">', unsafe_allow_html=True)
+        components.show_sidebar_card()
         
         value = st.sidebar.slider(
             feature_labels[feature],

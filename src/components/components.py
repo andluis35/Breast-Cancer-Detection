@@ -58,6 +58,10 @@ def show_title_card(title, subtitle=None):
     )
 
 
+def show_sidebar_card():
+    st.sidebar.markdown('<div class="sidebar-card">', unsafe_allow_html=True)
+
+
 def show_section_title(text):
     '''
         Exibe um título de seção estilizado para organizar visualmente o layout.
@@ -105,7 +109,7 @@ def show_about_project():
         Exibe a seção informativa do projeto, incluindo dataset, modelo,
         objetivo e créditos do desenvolvedor.
     '''
-    
+
     st.markdown(
         """
         <div class="about-card">
