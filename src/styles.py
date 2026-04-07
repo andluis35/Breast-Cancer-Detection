@@ -88,6 +88,8 @@ def load_styles():
                 background: linear-gradient(135deg, #2C687B, #2C687B);
                 padding: 30px 20px;
                 border-radius: 16px;
+                border-left: 6px solid #DB1A1A;
+                border-right: 6px solid #DB1A1A;
                 text-align: center;
                 color: white;
                 box-shadow: 0 8px 20px rgba(0,0,0,0.15);
@@ -96,8 +98,9 @@ def load_styles():
                 
             .title-card h1 {
                 margin: 0;
-                font-size: 32px;
+                font-size: 34px;
                 font-weight: 700;
+                letter-spacing: 0.5px;
             }
                 
             .title-card p {

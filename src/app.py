@@ -33,7 +33,7 @@ model = get_model()
 
 
 # Cabeçalho da página
-components.show_title_card("🔬 Preditor de Câncer de Mama 🔬", "Modelo de Machine Learning para apoio à análise clínica")
+components.show_title_card("Sistema de Predição de Câncer de Mama", "Modelo de Machine Learning para apoio à análise clínica")
 
 
 # Tradução das features
@@ -84,7 +84,7 @@ with col2:
 
 # Exibição dos resultados
 with st.container():
-    components.show_section_title("📊 Resultado 📊")
+    components.show_section_title("📊 Resultado")
     
     col1, col2 = st.columns(2)
 
@@ -124,7 +124,7 @@ figure.update_layout(
 st.plotly_chart(figure, use_container_width=True)
 
 # Gráfico de importância das variáveis
-components.show_section_title("📊 Influência das Variáveis 📊")
+components.show_section_title("📊 Influência das Variáveis")
 coefficients = model.coef_[0]
 abs_coeff = np.abs(coefficients)
 
@@ -147,6 +147,8 @@ figure2.update_layout(
     plot_bgcolor="#FFF6F6",
     paper_bgcolor="#FFF6F6",
     font=dict(color="#2C2D2E"),
+    xaxis_title_font=dict(color="#2C687B"),
+
     xaxis=dict(
         tickfont=dict(color="#2C687B"),
     ),

@@ -83,7 +83,7 @@ def show_about_project():
     st.markdown(
         """
         <div class="about-card">
-            <div class="about-title">🧠 Sobre o Projeto 🧠</div>
+            <div class="about-title">🧠 Sobre o Projeto</div>
             <div class="about-list">
                 <div><b>Dataset:</b> Wisconsin Breast Cancer (UCI)</div>
                 <div><b>Modelo:</b> Regressão Logística</div>
