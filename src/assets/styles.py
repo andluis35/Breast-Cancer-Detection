@@ -2,6 +2,12 @@ import streamlit as st
 
 
 def load_styles():
+    '''
+        Aplica estilos CSS customizados à aplicação Streamlit,
+        definindo cores, layout e aparência dos componentes visuais,
+        como sidebar, cards, gráficos e seções.
+    '''
+
     st.markdown(
         """
         <style>
