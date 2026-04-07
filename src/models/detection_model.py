@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 from sklearn.linear_model import LogisticRegression
 
@@ -6,8 +7,9 @@ def load_data():
     '''
         Carrega o dataset de câncer de mama a partir de um arquivo CSV.
     '''
-
-    return pd.read_csv("../data/breast_cancer.csv")
+    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    data_path = os.path.join(base_dir, "data", "breast_cancer.csv")
+    return pd.read_csv(data_path)
 
 
 def prepare_data(dataset):
