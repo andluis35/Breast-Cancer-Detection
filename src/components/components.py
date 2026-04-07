@@ -2,6 +2,10 @@ import streamlit as st
 
 
 def show_sidebar():
+    '''
+        Renderiza a sidebar da aplicação com título, descrição e ícone representativo.
+    '''
+
     st.sidebar.markdown(
         """
         <div class="sidebar">
@@ -15,9 +19,13 @@ def show_sidebar():
 
 
 def show_result_card(title, value):
+    '''
+        Exibe um card com o valor de probabilidade em formato percentual,
+        aplicando cores dinâmicas conforme o nível de risco.
+    '''
+
     percentage = value * 100
 
-    #Definição de cor baseada no risco
     if percentage < 40:
         color = "#2ecc71"
     elif percentage < 50:
@@ -35,6 +43,10 @@ def show_result_card(title, value):
     
 
 def show_title_card(title, subtitle=None):
+    '''
+        Renderiza o título principal da aplicação, com opção de subtítulo.
+    '''
+
     st.markdown(
         f"""
         <div class="title-card">
@@ -47,6 +59,10 @@ def show_title_card(title, subtitle=None):
 
 
 def show_section_title(text):
+    '''
+        Exibe um título de seção estilizado para organizar visualmente o layout.
+    '''
+
     st.markdown(
         f"""
         <div class="section-card">
@@ -58,12 +74,17 @@ def show_section_title(text):
 
 
 def show_status_card(prediction):
+    '''
+        Exibe o resultado da classificação (benigno ou maligno),
+        com cor e indicador visual associados.
+    '''
+
     if prediction == 2:
         label = "Tumor Benigno"
         color = "#2ecc71"
         icon = "🟢"
 
-    if prediction == 4:
+    elif prediction == 4:
         label = "Tumor Maligno"
         color = "#e74c3c"
         icon = "🔴"
@@ -80,6 +101,11 @@ def show_status_card(prediction):
 
 
 def show_about_project():
+    '''
+        Exibe a seção informativa do projeto, incluindo dataset, modelo,
+        objetivo e créditos do desenvolvedor.
+    '''
+    
     st.markdown(
         """
         <div class="about-card">
