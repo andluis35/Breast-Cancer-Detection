@@ -1,10 +1,9 @@
-import components
-import detection_model
+from components import components
+from models import detection_model
 import numpy as np
 import plotly.express as px
 import streamlit as st
-import styles
-from time import sleep
+from assets import styles
 
 
 # --------------------------

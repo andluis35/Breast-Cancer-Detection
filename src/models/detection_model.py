@@ -3,7 +3,7 @@ from sklearn.linear_model import LogisticRegression
 
 
 def load_data():
-    return pd.read_csv("breast_cancer.csv")
+    return pd.read_csv("./data/breast_cancer.csv")
 
 
 def prepare_data(dataset):
