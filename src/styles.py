@@ -5,7 +5,7 @@ def load_styles():
     st.markdown(
         """
         <style>
-            .main {
+            [data-testid="stAppViewContainer"] {
                 background-color: #FAEED1;
             }
 
@@ -28,6 +28,18 @@ def load_styles():
                 font-weight: bolder;
                 margin-bottom: 16px;
             }
+
+            div[data-testid="stPlotlyChart"] {
+                background: white;
+                padding: 18px;
+                border-radius: 14px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+                margin: 24px;
+            }
+
+            h3 {
+                margin-bottom: 24px;
+            }
                 
             .sidebar-card {
                 background: rgba(255, 255, 255, 0.05);
@@ -45,7 +57,7 @@ def load_styles():
                 background: rgba(255,255,255,0.08);
                 padding: 12px;
                 border-radius: 10px;
-                margin-bottom: 15px;
+                margin-bottom: 60px;
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
@@ -86,11 +98,12 @@ def load_styles():
                 border-radius: 14px;
                 box-shadow: 0 4px 12px rgba(0,0,0,0.08);
                 transition: 0.2s ease;
-                height: 100%;
+                height: 128px;
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
                 text-align: center;
+                margin-bottom: 24px;
             }
 
             .result-card:hover {
@@ -107,6 +120,91 @@ def load_styles():
             .result-value {
                 font-size: 28px;
                 font-weight: 700;
+            }
+
+            .status-card {
+                background: white;
+                padding: 18px;
+                border-radius: 14px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+                height: 128px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                text-align: center;
+                transition: 0.2s ease;
+            }
+
+            .status-card:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+            }
+
+            .status-title {
+                font-size: 14px;
+                color: #666;
+                margin-bottom: 8px;
+            }
+
+            .status-value {
+                font-size: 24px;
+                font-weight: 700;
+            }
+
+            .status-icon {
+                font-size: 28px;
+                margin-bottom: 6px;
+            }
+
+            .about-card {
+                background: white;
+                padding: 20px;
+                border-radius: 16px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+                margin-top: 10px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .about-title {
+                font-size: 18px;
+                font-weight: 600;
+                margin-bottom: 12px;
+                color: black;
+            }
+
+            .about-list {
+                font-size: 14px;
+                color: #444;
+                margin-bottom: 12px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .about-list b {
+                color: #111;
+            }
+
+            .about-description {
+                font-size: 14px;
+                color: #666;
+                line-height: 1.5;
+                margin-bottom: 12px;
+            }
+
+            .about-credits {
+                font-size: 14px;
+                color: black;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .credits-images img {
+                margin: 12px;
             }
         </style>
         """, 

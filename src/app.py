@@ -3,6 +3,7 @@ import detection_model
 import numpy as np
 import pandas as pd
 import plotly.express as px
+import plotly.io as pio
 from sklearn.linear_model import LogisticRegression
 import streamlit as st
 import styles
@@ -81,7 +82,6 @@ with col2:
     with st.spinner("Analisando dados..."):
         sleep(2)
 
-
 # Exibição dos resultados
 with st.container():
     components.show_section_title("📊 Resultado 📊")
@@ -89,10 +89,7 @@ with st.container():
     col1, col2 = st.columns(2)
 
     with col1:
-        if prediction == 2:
-            st.success("🟢 Tumor Benigno")
-        if prediction == 4:
-            st.error("🔴 Tumor Maligno")
+        components.show_status_card(prediction)
         
     with col2:
         components.show_result_card("Probabilidade de Malignidade", prob)
@@ -102,24 +99,44 @@ with st.container():
 figure = px.bar(
     x=["Benigno", "Maligno"],
     y=[1 - prob, prob],
-    labels={"x": "Classe", "y": "Probabilidade"},
+    labels={"x": "", "y": "Probabilidade"},
 )
+
+figure.update_traces(
+    marker_color=["#2ecc71", "#e74c3c"],
+    text=[f"{(1-prob)*100:.1f}%", f"{prob*100:.1f}%"],
+    textposition="outside"
+)
+
+figure.update_layout(
+    showlegend=False,
+    yaxis=dict(range=[0,1]),
+)
+
 st.plotly_chart(figure, use_container_width=True)
+
 
 
 # Gráfico de importância das variáveis
 components.show_section_title("📊 Influência das Variáveis 📊")
 coefficients = model.coef_[0]
+abs_coeff = np.abs(coefficients)
 
 figure2 = px.bar(
     x=coefficients,
     y=[feature_labels[f] for f in feature_names],
     orientation="h",
-    labels={"x": "Impacto no modelo", "y": "Variável"},
+    color=abs_coeff,
+    color_continuous_scale="Reds"
+)
+
+figure2.update_layout(
+    coloraxis_showscale=False,
+    xaxis_title="Impacto no modelo",
+    yaxis_title=""
 )
 st.plotly_chart(figure2, use_container_width=True)
 
 
 # Sobre o projeto
-components.show_section_title("🧠 Sobre o projeto 🧠")
 components.show_about_project()
